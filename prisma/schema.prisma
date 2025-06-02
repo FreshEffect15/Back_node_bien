@@ -1,0 +1,134 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Usuario {
+  id Int @id @default(autoincrement())
+  nombre String?
+  email String? @unique
+  contrasenia String
+  rol Rol
+
+  direcciones UsuarioDireccion[]
+  @@map("usuarios")
+}
+
+model UsuarioDireccion {
+  id Int @id @default(autoincrement())
+  usuarioId Int
+  direccionId Int
+
+  usuario Usuario @relation(fields: [usuarioId], references: [id])
+  direccion Direccion @relation(fields: [direccionId], references: [id])
+
+  @@id([usuarioId, direccionId])
+  @@map("usuario_direcciones)
+}
+
+model Categoria {
+  id Int @id @default(autoincrement())
+  nombre String?
+  descripcion String
+  idTipo Int
+
+  tipo Tipo @relation(fields: [idTipo], references: [id])
+
+  @@map("categorias")
+}
+
+model DetalleOrden {
+  id Int @id @default(autoincrement())
+  ordenDeCompraId Int
+  productoId Int
+  cantidad Int
+
+  ordenDeCompra OrdenDeCompra @relation(fields: [ordenDeCompraId], references: [id])
+  producto Produto @relation(fields: [productoId], references: [id])
+
+  @@map("DetallesDeOrdenes")
+}
+
+model Direccion {
+  id Int @id @default(autoincrement())
+  calle String
+  numero String
+  ciudad String
+  provincia String
+  pais String
+  codigoPostal String
+
+  usuario UsuarioDireccion[]
+
+  @@map("direcciones")
+}
+
+model OrdenDeCompra {
+  id Int @id @default(autoincrement())
+  usuarioId Int
+  fecha DateTime
+  detalle DetalleOrden[]
+
+  usuario Usuario @relation(fields: [usuarioId], references: [id])
+
+  @@map("OrdenesDeCompra")
+}
+
+model Produto {
+  id Int @id @default(autoincrement())
+  nombre String
+  cantidad Int
+  precio Float
+  descripcion String
+  color String
+  marca String
+  categoriaId Int
+
+  categoria Categoria @relation(fields: [categoriaId], references: [id])
+
+  @@map("Produtos")
+}
+
+model Talle {
+  id Int @id @default(autoincrement())
+  idTipo Int
+
+  tipo Tipo @relation(fields: [idTipo], references: [id])
+  
+  @@map("Talles")
+}
+
+model TalleProducto {
+  id Int @id @default(autoincrement())
+  productoId Int 
+  talleId Int
+  stock Int
+
+  producto Produto @relation(fields: [productoId], references: [id])
+  talle Talle @relation(fields: [talleId], references: [id])
+
+  @@map("TallesDeProductos")
+}
+
+model Tipo {
+  id Int @id @default(autoincrement())
+  nombre String
+
+  @@map("Tipos")
+}
+
+enum Rol {
+  ADMIN
+  CLIENT
+}
