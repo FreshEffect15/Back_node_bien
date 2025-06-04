@@ -14,7 +14,7 @@ datasource db {
 model Usuario {
   id           Int                @id @default(autoincrement())
   nombre       String?
-  email        String?            @unique
+  email        String             @unique
   contrasenia  String
   rol          Rol
   direcciones  UsuarioDireccion[]
