@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 import bcrypt from 'bcrypt';
-import * as usuarioService from '../services/usuarioService';
+import * as usuarioService from '../services/usuarioServices';
 
 export async function getAllUsuarios(req: Request, res: Response) {
   try {
