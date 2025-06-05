@@ -3,24 +3,32 @@ import { PrismaClient, Categoria } from '../generated/prisma';
 const prisma = new PrismaClient();
 
 export async function getAllCategorias(): Promise<Categoria[]> {
-  return prisma.categoria.findMany();
+  return prisma.categoria.findMany({ where: { activo: true } });
 }
 
 export async function getCategoriaById(id: number): Promise<Categoria | null> {
-  return prisma.categoria.findUnique({ where: { id } });
+  return prisma.categoria.findFirst({ where: { id, activo: true } });
 }
 
-export async function createCategoria(data: Omit<Categoria, 'id' | 'createdAt' | 'updatedAt'>): Promise<Categoria> {
-  return prisma.categoria.create({ data });
+export async function createCategoria(data: Omit<Categoria, 'id' | 'createdAt' | 'updatedAt' | 'activo'>): Promise<Categoria> {
+  return prisma.categoria.create({ data: { ...data, activo: true } as any });
 }
 
-export async function updateCategoria(id: number, data: Partial<Omit<Categoria, 'id' | 'createdAt' | 'updatedAt'>>): Promise<Categoria> {
+export async function updateCategoria(
+  id: number,
+  data: Partial<Omit<Categoria, 'id' | 'createdAt' | 'updatedAt' | 'activo'>>
+): Promise<Categoria> {
+  const { activo, ...rest } = data as any;
   return prisma.categoria.update({
     where: { id },
-    data,
+    data: rest,
   });
 }
 
 export async function deleteCategoria(id: number): Promise<Categoria> {
-  return prisma.categoria.delete({ where: { id } });
+  // Delete lógico: poner activo en false
+  return prisma.categoria.update({
+    where: { id },
+    data: { activo: false } as any,
+  });
 }

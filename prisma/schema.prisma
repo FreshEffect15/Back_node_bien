@@ -19,10 +19,10 @@ model Usuario {
   rol          Rol
   direcciones  UsuarioDireccion[]
   ordenes      OrdenDeCompra[]
+  activo       Boolean            @default(true)
 
   @@map("usuarios")
 }
-
 
 model UsuarioDireccion {
   id          Int       @id @default(autoincrement())
@@ -31,6 +31,7 @@ model UsuarioDireccion {
 
   usuario     Usuario   @relation(fields: [usuarioId], references: [id])
   direccion   Direccion @relation(fields: [direccionId], references: [id])
+  activo      Boolean   @default(true)
 
   @@map("usuario_direcciones")
 }
@@ -44,6 +45,7 @@ model Direccion {
   pais          String
   codigoPostal  String
   usuario       UsuarioDireccion[]
+  activo        Boolean            @default(true)
 
   @@map("direcciones")
 }
@@ -53,6 +55,7 @@ model Categoria {
   nombre      String?
   descripcion String
   idTipo      Int
+  activo      Boolean  @default(true)
 
   tipo        Tipo     @relation(fields: [idTipo], references: [id])
   productos   Producto[]
@@ -69,6 +72,7 @@ model Producto {
   color       String
   marca       String
   categoriaId Int
+  activo      Boolean          @default(true)
 
   categoria   Categoria        @relation(fields: [categoriaId], references: [id])
   talles      TalleProducto[]
@@ -80,6 +84,7 @@ model Producto {
 model Talle {
   id      Int       @id @default(autoincrement())
   idTipo  Int
+  activo   Boolean  @default(true)
 
   tipo    Tipo      @relation(fields: [idTipo], references: [id])
   productos TalleProducto[]
@@ -92,6 +97,7 @@ model TalleProducto {
   productoId  Int
   talleId     Int
   stock       Int
+  activo      Boolean   @default(true)
 
   producto    Producto  @relation(fields: [productoId], references: [id])
   talle       Talle     @relation(fields: [talleId], references: [id])
@@ -102,6 +108,7 @@ model TalleProducto {
 model Tipo {
   id     Int      @id @default(autoincrement())
   nombre String
+  activo     Boolean  @default(true)
 
   categorias Categoria[]
   talles     Talle[]
@@ -113,6 +120,7 @@ model OrdenDeCompra {
   id             Int             @id @default(autoincrement())
   usuarioId      Int
   fecha          DateTime
+  activo         Boolean         @default(true)
 
   usuario        Usuario         @relation(fields: [usuarioId], references: [id])
   detalle        DetalleOrden[]
@@ -125,6 +133,7 @@ model DetalleOrden {
   ordenDeCompraId Int
   productoId      Int
   cantidad        Int
+  activo          Boolean        @default(true)
 
   ordenDeCompra   OrdenDeCompra @relation(fields: [ordenDeCompraId], references: [id])
   producto        Producto       @relation(fields: [productoId], references: [id])
