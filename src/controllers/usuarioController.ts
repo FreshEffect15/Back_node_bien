@@ -33,11 +33,13 @@ export async function createUsuario(req: Request, res: Response) {
     // Hashear la contraseña antes de crear el usuario
     if (data.password) {
       const SALT_ROUNDS = 10;
-      data.password = await bcrypt.hash(data.password, SALT_ROUNDS);
+      data.contrasenia = await bcrypt.hash(data.password, SALT_ROUNDS);
+      delete data.password; // Elimina el campo password para evitar confusión
     }
     const usuarioCreado = await usuarioService.createUsuario(data);
     res.status(201).json(usuarioCreado);
   } catch (error) {
+    console.error(error);
     res.status(500).json({ message: 'Error al crear usuario', error });
   }
 }

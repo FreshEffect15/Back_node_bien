@@ -32,7 +32,8 @@ const register = async (req: Request, res: Response): Promise<void> => {
 
     res.status(201).json(usuarioCreado);
   } catch (error) {
-    res.status(500).json({ message: 'Error al crear usuario', error });
+    console.error('Error en register:', error); // Muy útil para consola
+res.status(500).json({ message: 'Error al crear usuario', error: error instanceof Error ? error.message : error });
   }
 };
 
