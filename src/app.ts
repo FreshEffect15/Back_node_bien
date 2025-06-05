@@ -6,6 +6,7 @@ import usuarioRoutes from './routes/usuarioRoutes';
 import authRoutes from './routes/authRoutes';
 import productoRoutes from './routes/productoRoutes';
 import categoriaRoutes from './routes/categoriaRoutes'; 
+import tipoRoutes from './routes/tipoRoutes';
 
 dotenv.config();
 
@@ -22,6 +23,7 @@ app.use('/api/auth', authRoutes);
 app.use('/api/usuarios', usuarioRoutes);
 app.use('/api/productos', productoRoutes);
 app.use('/api/categorias', categoriaRoutes); 
+app.use('/api/tipos', tipoRoutes); // Agrega esta línea antes de app.listen
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
