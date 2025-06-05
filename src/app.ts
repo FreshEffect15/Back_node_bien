@@ -4,7 +4,7 @@ import dotenv from 'dotenv';
 
 import usuarioRoutes from './routes/usuarioRoutes';
 import authRoutes from './routes/authRoutes'; // ✅ así está bien
-
+import productoRoutes from './routes/productoRoutes';
 
 dotenv.config();
 
@@ -19,7 +19,7 @@ app.get('/', (_, res) => {
 app.use('/api/auth', authRoutes);
 
 app.use('/api/usuarios', usuarioRoutes);
-
+app.use('/api/productos', productoRoutes);
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
