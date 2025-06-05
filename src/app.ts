@@ -3,7 +3,8 @@ import cors from 'cors';
 import dotenv from 'dotenv';
 
 import usuarioRoutes from './routes/usuarioRoutes';
-import authRoutes from './routes/authRoutes';
+import authRoutes from './routes/authRoutes'; // ✅ así está bien
+
 
 dotenv.config();
 
@@ -15,9 +16,10 @@ app.get('/', (_, res) => {
   res.send('Servidor funcionando');
 });
 
-app.use('/auth', authRoutes);
+app.use('/api/auth', authRoutes);
 
-app.use('/usuarios', usuarioRoutes);
+app.use('/api/usuarios', usuarioRoutes);
+
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
