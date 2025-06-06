@@ -22,7 +22,6 @@ export async function updateTalle(id: number, data: { idTipo?: number }): Promis
 }
 
 export async function deleteTalle(id: number): Promise<Talle> {
-  // Delete lógico: poner activo en false
   return prisma.talle.update({
     where: { id },
     data: { activo: false } as any,

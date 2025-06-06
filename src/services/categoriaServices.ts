@@ -26,7 +26,6 @@ export async function updateCategoria(
 }
 
 export async function deleteCategoria(id: number): Promise<Categoria> {
-  // Delete lógico: poner activo en false
   return prisma.categoria.update({
     where: { id },
     data: { activo: false } as any,

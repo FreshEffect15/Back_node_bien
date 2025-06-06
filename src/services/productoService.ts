@@ -15,12 +15,10 @@ export const createProducto = async (data: any) => {
 };
 
 export const updateProducto = async (id: number, data: any) => {
-  // No permitir actualizar el campo activo desde aquí
   const { activo, ...rest } = data;
   return prisma.producto.update({ where: { id }, data: rest });
 };
 
 export const deleteProducto = async (id: number) => {
-  // Delete lógico: poner activo en false
   return prisma.producto.update({ where: { id }, data: { activo: false } as any });
 };

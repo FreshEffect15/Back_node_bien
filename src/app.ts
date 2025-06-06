@@ -23,7 +23,7 @@ app.use('/api/auth', authRoutes);
 app.use('/api/usuarios', usuarioRoutes);
 app.use('/api/productos', productoRoutes);
 app.use('/api/categorias', categoriaRoutes); 
-app.use('/api/tipos', tipoRoutes); // Agrega esta línea antes de app.listen
+app.use('/api/tipos', tipoRoutes); 
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {

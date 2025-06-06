@@ -36,7 +36,7 @@ export async function register({ email, password, nombre }: RegisterRequest) {
     },
   });
 
-  // Oculta la contraseña antes de devolver el objeto
+
   const { contrasenia, ...userWithoutPass } = newUser;
   return userWithoutPass;
 }
