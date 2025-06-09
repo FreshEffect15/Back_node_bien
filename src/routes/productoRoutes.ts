@@ -1,13 +1,13 @@
 import { Router } from 'express';
 import * as productoController from '../controllers/productoController';
-import { authenticateJWT } from '../../middlewares/jwtMiddleware';
+import { authenticateJWT, adminOnly } from '../../middlewares/jwtMiddleware';
 
 const router = Router();
 
-router.get('/', productoController.getAllProductos);
-router.get('/:id', productoController.getProductoById);
-router.post('/', authenticateJWT, productoController.createProducto);
-router.put('/:id', authenticateJWT, productoController.updateProducto);
-router.delete('/:id', authenticateJWT, productoController.deleteProducto);
+router.get('/', authenticateJWT, productoController.getAllProductos);
+router.get('/:id', authenticateJWT, productoController.getProductoById);
+router.post('/', authenticateJWT, adminOnly, productoController.createProducto);
+router.put('/:id', authenticateJWT, adminOnly, productoController.updateProducto);
+router.delete('/:id', authenticateJWT, adminOnly, productoController.deleteProducto);
 
 export default router;

@@ -6,6 +6,7 @@ const JWT_SECRET = process.env.JWT_SECRET || 'secret';
 export interface JwtPayload {
   id: number;
   email: string;
+  rol: string;
   iat: number;
   exp: number;
 }
@@ -16,7 +17,7 @@ declare module 'express-serve-static-core' {
   }
 }
 
-export function authenticateJWT(req: Request, res: Response, next: NextFunction) {
+export function authenticateJWT(req: Request, res: Response, next: NextFunction): void {
   const authHeader = req.headers.authorization;
 
   if (!authHeader || !authHeader.startsWith('Bearer ')) {
@@ -32,8 +33,15 @@ export function authenticateJWT(req: Request, res: Response, next: NextFunction)
     next();
   } catch (error) {
     console.log(error);
-
     res.status(401).json({ message: 'Token inválido' });
     return;
   }
+}
+
+export function adminOnly(req: Request, res: Response, next: NextFunction): void {
+  if (!req.user || req.user.rol !== 'ADMIN') {
+    res.status(403).json({ message: 'Solo el administrador puede acceder a este recurso.' });
+    return;
+  }
+  next();
 }
