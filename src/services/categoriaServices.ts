@@ -3,11 +3,31 @@ import { PrismaClient, Categoria } from '../generated/prisma';
 const prisma = new PrismaClient();
 
 export async function getAllCategorias(): Promise<Categoria[]> {
-  return prisma.categoria.findMany({ where: { activo: true } });
+  return prisma.categoria.findMany({
+    where: { activo: true },
+    include: {
+      tipo: {
+        select: {
+          id: true,
+          nombre: true,
+        },
+      },
+    },
+  });
 }
 
 export async function getCategoriaById(id: number): Promise<Categoria | null> {
-  return prisma.categoria.findFirst({ where: { id, activo: true } });
+  return prisma.categoria.findFirst({
+    where: { id, activo: true },
+    include: {
+      tipo: {
+        select: {
+          id: true,
+          nombre: true,
+        },
+      },
+    },
+  });
 }
 
 export async function createCategoria(data: Omit<Categoria, 'id' | 'createdAt' | 'updatedAt' | 'activo'>): Promise<Categoria> {
